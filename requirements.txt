@@ -1,0 +1,12 @@
+# brain installed manually first
+matplotlib
+numpy
+pillow
+pyapriltags
+PyFixedReps-andnp==4.1.0
+pyyaml
+scipy
+seaborn
+statsmodels
+torch
+wandb

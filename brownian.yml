@@ -1,0 +1,49 @@
+algorithm: "brownian"                             # algorithm to use; "ac" or "brownian" or "ppo"
+broadcast: True                                   # if True, then the brain sends a broadcast notification to enable all other devices to know about the brain; if False, then the system relies on other devices broadcasting heartbeats for the brain to know where to send
+broadcast_rate_s: 1.0                             # rate at which the broadcast notification is sent if broadcast is True
+cameras:                                          # which cameras to use for tag detection
+    - "31:33:36:33:37:31"                         # middle joint camera
+    - "31:36:31:31:34:31"                         # upper joint outer camera
+    - "32:34:30:35:35:31"                         # upper joint inner camera
+    - "32:34:31:31:33:33"                         # lower joint camera
+display: True                                     # toggles streaming the cameras onto the monitor
+dummy_drive: False                                # toggles whether to ignore drive commands for debugging
+event_timeout: 1.0                                # if the receiver is set to display, then this is a timeout on that thread to ensure it does not wait indefinitely if nothing is received
+fps_time_range: 2.0                               # used to calculate the rolling average (this is the period in seconds) for frame rate calculations on the display
+limits:                                           # safe servo ranges
+    "31:33:36:33:37:31":                          # finger servo; middle joint camera
+        min: -1.0
+        max: 1.0
+    "31:36:31:31:34:31":                          # inner left/right servo; upper joint outer camera
+        min: -0.75
+        max: 0.75
+    "32:34:30:35:35:31":                          # up/down servo; upper joint inner camera
+        min: -1.0
+        max: 1.0
+    "32:34:31:31:33:33":                          # outer left/right servo; lower joint camera
+        min: -1.0
+        max: 1.0
+log_level: "INFO"                                 # how verbose the logging should be
+log_verbose: False                                # if set to true, then a lot more logging beyond INFO and DEBUG is logged; log levels do not have VERBOSE
+port:
+    name: "eno1"
+    scapy: False                                  # set to True for windows and False for ubuntu
+    type: "ethernet"                              # "serial" or "ethernet" or "router" if using simulated router for connecting to Gazebo sim
+process: True                                     # set to False for windows and True for ubuntu (whether multiprocess or multithreaded)
+queue_size: 100                                   # used for response queue (whether commands were sent) and buffer queue (buffered messages from robot); set to 0 for unlimited
+random_start_location: False                      # toggles episodes starting in zero position or a random location
+runtime: 10                                       # time to run for in minutes
+save_step_counts: True                            # toggles saving the steps per episode
+servos:                                           # which servos to allow control of
+    - "31:33:36:33:37:31"                         # finger servo
+    - "31:36:31:31:34:31"                         # inner left/right servo
+    - "32:34:30:35:35:31"                         # up/down servo
+    - "32:34:31:31:33:33"                         # outer left/right servo
+set_slew_rate: False                              # toggles writing the slew rate to each servo at the start
+single_servo: True                                # toggles all-servo movement each timestep or single servo movement
+single_thread_interface: False
+sleep: 1                                          # time to sleep for between actions
+slew_rate: 2                                      # controls how fast the servos can move
+step_counts_outfile:
+    "results/brownian_step_counts.npy"            # file to save the steps per episode to; will overwrite
+wandb: True                                       # toggles logging to wandb
