@@ -5,6 +5,7 @@ from brain.brain_buffer import BrainBuffer
 from brain.brain_interface import BrainInterface
 from collections import OrderedDict
 from PIL import Image, UnidentifiedImageError
+import matplotlib.pyplot as plt
 from PyFixedReps import TileCoder, TileCoderConfig
 from queue import Empty
 import argparse
@@ -20,6 +21,7 @@ import torch
 import wandb
 import warnings
 import yaml
+import random
 
 
 class ACAgent:
@@ -126,6 +128,7 @@ class Brain:
             time.sleep(0.01)
         time.sleep(config["sleep"])  # give it a moment for everything to normalize
 
+        camera_tensor = self.kill_cameras()
         # send the servos to their start position
         if config["random_start_location"]:
             self.randomize_servos()
@@ -161,11 +164,14 @@ class Brain:
         time.sleep(
             config["sleep"]
         )  # give extra time for all the servos to get to the start position
+        camera_tensor = torch.tensor([1,1,1,1], dtype=torch.float32)
+        camera_tensor /= camera_tensor.sum()
+
         if non_final:
             # make sure we haven't hit a final state and if we have try again
             self.update_images()
             tags = self.at_detector.detect(
-                np.asarray(self.stich_images()),
+                np.asarray(self.stich_images(camera_tensor)),
                 estimate_tag_pose=False,
                 camera_params=None,
                 tag_size=None,
@@ -181,17 +187,10 @@ class Brain:
         have passed and returns the number of steps taken in each
         iteration.
         """
-        # build the tile coder
-        tc = TileCoder(
-            TileCoderConfig(
-                dims=len(self.pos),
-                input_ranges=[(v["min"], v["max"]) for v in config["limits"].values()],
-                scale_output=False,
-                tiles=4,
-                tilings=4,
-            )
-        )
-        initial_state = tc.encode(list(self.pos.values()))
+
+        camera_tensor = self.kill_cameras()
+
+        initial_state = np.array(list(self.pos.values()) + camera_tensor.tolist())
 
         # build the learner
         learner = ACAgent(len(initial_state), 2 * len(config["servos"]))
@@ -201,6 +200,8 @@ class Brain:
         global_step = 0
         step = 0
         step_counts = list()
+
+
         while len(step_counts) < config["num_episodes"]:
             # execute the next action
             mac = config["servos"][action // 2]
@@ -222,7 +223,7 @@ class Brain:
 
             # calculate the reward
             tags = self.at_detector.detect(
-                np.asarray(self.stich_images()),
+                np.asarray(self.stich_images(camera_tensor)),
                 estimate_tag_pose=False,
                 camera_params=None,
                 tag_size=None,
@@ -241,6 +242,7 @@ class Brain:
                     self.zero_servos()
                 reward = 1
                 gamma = 0
+                camera_tensor = self.kill_cameras()
             else:
                 reward = 0
                 gamma = config["hyperparameters"]["gamma"]
@@ -249,7 +251,7 @@ class Brain:
             action, delta = learner.step(
                 reward,
                 gamma,
-                tc.encode(list(self.pos.values())),
+                np.array(list(self.pos.values()) + camera_tensor.tolist()),  # input obs
                 config["hyperparameters"]["eta"],
                 config["hyperparameters"]["alpha_v"],
                 config["hyperparameters"]["alpha_u"],
@@ -288,13 +290,14 @@ class Brain:
         step = 0
         step_counts = list()
         start_time = time.time()
+        camera_tensor = self.kill_cameras()
         while time.time() - start_time < 60 * config["runtime"]:
             # get the new images from the cameras
             self.update_images()
 
             # check for tags and move the servos
             tags = self.at_detector.detect(
-                np.asarray(self.stich_images()),
+                np.asarray(self.stich_images(camera_tensor)),
                 estimate_tag_pose=False,
                 camera_params=None,
                 tag_size=None,
@@ -308,6 +311,7 @@ class Brain:
                     wandb.log({"episode_length": step}, step=global_step)
                 global_step += 1
                 step = 0
+                camera_tensor = self.kill_cameras()
                 if config["random_start_location"]:
                     self.randomize_servos()
                 else:
@@ -322,12 +326,20 @@ class Brain:
                 else:
                     servos = config["servos"]
                 for mac in servos:
-                    self.pos[mac] = clip(
-                        self.pos[mac]
-                        + np.random.normal(scale=0.5)
-                        * (config["limits"][mac]["max"] - config["limits"][mac]["min"]),
-                        config["limits"][mac],
-                    )  # Brownian noise
+                    if config["discrete_actions"]:
+                        self.pos[mac] = np.random.choice(
+                            config["limits"][mac]["choices"]
+                        )
+                    else:
+                        self.pos[mac] = clip(
+                            self.pos[mac]
+                            + np.random.normal(scale=0.5)
+                            * (
+                                config["limits"][mac]["max"]
+                                - config["limits"][mac]["min"]
+                            ),
+                            config["limits"][mac],
+                        )  # Brownian noise
                     if not config["dummy_drive"]:
                         self.brain_interface.drive(mac, self.pos[mac])
                 if config["wandb"]:
@@ -356,11 +368,12 @@ class Brain:
             device = torch.device("cpu")
 
         # setup buffers
+        # add state of four cameras
         obs = torch.zeros(
             (
                 config["hyperparameters"]["max_steps"],
                 config["hyperparameters"]["num_envs"],
-                len(config["limits"]),
+                len(config["limits"])+4,
             )
         ).to(device)
         actions = torch.zeros(
@@ -394,8 +407,9 @@ class Brain:
                 config["hyperparameters"]["num_envs"],
             )
         ).to(device)
+        # add 4 additional dimensions for camera states
         next_obs = torch.zeros(
-            (config["hyperparameters"]["num_envs"], len(self.pos))
+            (config["hyperparameters"]["num_envs"], len(self.pos) + 4)
         ).to(device)
         next_done = torch.zeros(config["hyperparameters"]["num_envs"]).to(device)
         all_returns = list()
@@ -431,7 +445,11 @@ class Brain:
                     self.randomize_servos()
                 else:
                     self.zero_servos()
-                next_obs[run, :] = torch.Tensor(list(self.pos.values())).to(device)
+            # randomly kill camera and add camera state to obs
+                camera_tensor = self.kill_cameras()
+                next_obs[run, :len(self.pos)] = torch.Tensor(list(self.pos.values())).to(device)
+                next_obs[run, len(self.pos):] = camera_tensor.to(device)
+
                 for step in range(0, config["hyperparameters"]["max_steps"]):
                     global_step += 1
                     obs[step, run, :] = next_obs[run, :]
@@ -469,9 +487,11 @@ class Brain:
                     self.update_images()
 
                     # update variables
-                    next_obs[run, :] = torch.Tensor(list(self.pos.values())).to(device)
+                    # add camera state
+                    next_obs[run, :len(self.pos)] = torch.Tensor(list(self.pos.values())).to(device)
+                    next_obs[run, len(self.pos):] = camera_tensor
                     tags = self.at_detector.detect(
-                        np.asarray(self.stich_images()),
+                        np.asarray(self.stich_images(camera_tensor)),
                         estimate_tag_pose=False,
                         camera_params=None,
                         tag_size=None,
@@ -486,6 +506,7 @@ class Brain:
                     if next_done[run]:
                         reward = 0
                     elif 29 in [tag.tag_id for tag in tags]:  # tag detected; note it
+                        logging.info("Found target in {} step(s)".format(step))
                         iteration_step_counts.append(step + 1)
                         if config["wandb"]:
                             wandb.log({"episode_length": step + 1}, step=global_step)
@@ -543,7 +564,7 @@ class Brain:
                 returns = advantages + values
 
             # flatten the batch
-            b_obs = obs.reshape((-1, len(self.pos)))
+            b_obs = obs.reshape((-1, len(self.pos)+4))
             b_logprobs = logprobs.reshape(-1)
             b_actions = actions.reshape((-1, len(config["servos"])))
             b_advantages = advantages.reshape(-1)
@@ -676,33 +697,59 @@ class Brain:
         if config["save_step_counts"]:
             np.save(config["step_counts_outfile"], all_step_counts)
 
-    def stich_images(self) -> Image.Image:
+    def stich_images(self, camera_tensor) -> Image.Image:
         """Stitches current images for the given cameras together into a
         big grey scale one suitable for tag detection.
         """
         macs = list(config["limits"].keys())
         stiched = np.zeros((96 * 2, 96 * 2, 3), dtype=np.uint8)
-        if macs[0] in config["cameras"]:
+        if macs[0] in config["cameras"] and camera_tensor[0] > 0:
             try:
                 np.copyto(stiched[:96, :96, :], self.current_images[macs[0]])
             except (KeyError, OSError):
                 pass
-        if macs[1] in config["cameras"]:
+        if macs[1] in config["cameras"] and camera_tensor[1] > 0:
             try:
                 np.copyto(stiched[96:, :96, :], self.current_images[macs[1]])
             except (KeyError, OSError):
                 pass
-        if macs[2] in config["cameras"]:
+        if macs[2] in config["cameras"] and camera_tensor[2] > 0:
             try:
                 np.copyto(stiched[:96, 96:, :], self.current_images[macs[2]])
             except (KeyError, OSError):
                 pass
-        if macs[3] in config["cameras"]:
+        if macs[3] in config["cameras"] and camera_tensor[3] > 0:
             try:
                 np.copyto(stiched[96:, 96:, :], self.current_images[macs[3]])
             except (KeyError, OSError):
                 pass
-        return Image.fromarray(stiched, "RGB").convert("L")
+
+        # Convert stitched image to PIL Image
+        color_image = Image.fromarray(stiched, "RGB")
+        # self.show_stiteched_image(color_image)
+
+        return color_image.convert("L")
+
+    def show_stiteched_image(self, color_image: Image.Image):
+        # Convert PIL Image to numpy array
+        color_array = np.array(color_image)
+
+        fig_name = 'stitched figure'
+        # Check if the figure with the specified name already exists
+        fig_nums = plt.get_fignums()
+        if fig_name in [plt.figure(num).get_label() for num in fig_nums]:
+            plt.figure(num=fig_name)
+            plt.clf()  # Clear the current figure
+        else:
+            plt.figure(num=fig_name, figsize=(6, 6))
+    
+        ax = plt.gca()  # Get current axes
+        ax.imshow(color_array)
+        ax.axis('off')  # Hide axes
+    
+        plt.draw()
+        plt.pause(0.05) 
+        plt.ioff()
 
     def update_images(self):
         """Empties all the buffers and store the most recent image from
@@ -723,6 +770,45 @@ class Brain:
         while self.brain_interface.tx_result_queue.qsize() > 0:
             result = self.brain_interface.tx_result_queue.get(block=False)
 
+    def kill_cameras(self):
+        """
+        Randomly kills a specified number of cameras.
+
+        Parameters:
+        min_kill (int): Minimum number of cameras to kill.
+        max_kill (int): Maximum number of cameras to kill.
+
+        Returns:
+        torch.Tensor: A one-hot encoded vector representing the camera states.
+        """
+        
+        min_kill = config.get("kill_cameras", {}).get("min_kill", 0)
+        max_kill = config.get("kill_cameras", {}).get("max_kill", 0)
+
+        if min_kill > max_kill:
+            raise ValueError("min_kill should be less than or equal to max_kill.")
+        if max_kill > 3:
+            raise ValueError("max_kill should not be greater than 3.")
+
+        # Initialize the camera states (all on)
+        camera_states = [1, 1, 1, 1]
+
+        # Randomly select the number of cameras to kill
+        num_to_kill = random.randint(min_kill, max_kill)
+
+        # Randomly select indices to turn off
+        kill_indices = random.sample(range(4), num_to_kill)
+        for idx in kill_indices:
+            camera_states[idx] = 0
+
+        # Normalize the one-hot vector
+        camera_tensor = torch.tensor(camera_states, dtype=torch.float32)
+
+        camera_tensor /= camera_tensor.sum()
+        print("Camera Tensor After normalization:", camera_tensor)
+
+        return camera_tensor
+    
     def zero_servos(self) -> None:
         """Returns all the servos to their start position."""
         self.pos = OrderedDict({k: 0 for k in self.macs})
@@ -745,13 +831,13 @@ class PPOAgent(torch.nn.Module):
         super().__init__()
         self.critic = torch.nn.Sequential(
             self._layer_init(
-                torch.nn.Linear(np.array(len(config["limits"])).prod(), 1), std=1.0
+                torch.nn.Linear(np.array(len(config["limits"])+4).prod(), 1), std=1.0
             )
         )
         self.actor_mean = torch.nn.Sequential(
             self._layer_init(
                 torch.nn.Linear(
-                    np.array(len(config["limits"])).prod(), len(config["servos"])
+                    np.array(len(config["limits"])+4).prod(), len(config["servos"])
                 ),
                 std=0.01,
             )
@@ -837,6 +923,8 @@ if __name__ == "__main__":
         logging.root.setLevel(logging.CRITICAL)
 
     # augment config
+    macs = list(config["limits"].keys())
+    config.update({"discrete_actions": "choices" in config["limits"][macs[0]]})
     config.update({"git_repo_head_hexsha": git.Repo().head.object.hexsha})
     if config["algorithm"] == "ppo":
         config["hyperparameters"]["batch_size"] = (
@@ -852,6 +940,14 @@ if __name__ == "__main__":
             // config["hyperparameters"]["batch_size"]
         )
 
+    # check config
+    for mac in macs:
+        if config["discrete_actions"]:
+            assert "choices" in config["limits"][mac]
+        else:
+            assert ("min" in config["limits"][mac]) and ("max" in config["limits"][mac])
+    if config["discrete_actions"]:
+        assert not config["random_start_location"]
     if config["wandb"]:
         # init wandb
         wandb.login()

@@ -32,16 +32,15 @@ limits:                                           # safe servo ranges
         max: 1.0
 log_level: "INFO"                                 # how verbose the logging should be
 log_verbose: False                                # if set to true, then a lot more logging beyond INFO and DEBUG is logged; log levels do not have VERBOSE
-model_outfile:
-    "results/ac_model.pkl"                        # file to save the model to; will overwrite
-num_episodes: 100                                 # number of episodes to run for
+model_outfile: "results/ac_model_kill12_run1.pt"
+num_episodes: 250                                 # number of episodes to run for
 port:
-    name: "eno1"
+    name: "eth0"
     scapy: False                                  # set to True for windows and False for ubuntu
     type: "ethernet"                              # "serial" or "ethernet" or "router" if using simulated router for connecting to Gazebo sim
 process: True                                     # set to False for windows and True for ubuntu (whether multiprocess or multithreaded)
 queue_size: 100                                   # used for response queue (whether commands were sent) and buffer queue (buffered messages from robot); set to 0 for unlimited
-random_start_location: False                      # toggles episodes starting in zero position or a random location
+random_start_location: True                       # toggles episodes starting in zero position or a random location
 save_model: True                                  # toggles saving the final model
 save_step_counts: True                            # toggles saving the steps per episode
 servos:                                           # which servos to allow control of
@@ -53,6 +52,9 @@ set_slew_rate: False                              # toggles writing the slew rat
 single_thread_interface: False
 sleep: 1                                          # time to sleep for between actions
 slew_rate: 2                                      # controls how fast the servos can move
-step_counts_outfile:
-    "results/ac_step_counts.npy"                  # file to save the steps per episode to; will overwrite
+step_counts_outfile: "results/ac_step_counts_kill12_run1.npy"
 wandb: True                                       # toggles logging to wandb
+kill_cameras:
+    min_kill: 1                                   # Minimum number of cameras to be turned off
+    max_kill: 2                                   # Maximum number of cameras to be turned off
+

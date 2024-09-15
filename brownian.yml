@@ -26,13 +26,13 @@ limits:                                           # safe servo ranges
 log_level: "INFO"                                 # how verbose the logging should be
 log_verbose: False                                # if set to true, then a lot more logging beyond INFO and DEBUG is logged; log levels do not have VERBOSE
 port:
-    name: "eno1"
+    name: "eth0"
     scapy: False                                  # set to True for windows and False for ubuntu
     type: "ethernet"                              # "serial" or "ethernet" or "router" if using simulated router for connecting to Gazebo sim
 process: True                                     # set to False for windows and True for ubuntu (whether multiprocess or multithreaded)
 queue_size: 100                                   # used for response queue (whether commands were sent) and buffer queue (buffered messages from robot); set to 0 for unlimited
 random_start_location: False                      # toggles episodes starting in zero position or a random location
-runtime: 10                                       # time to run for in minutes
+runtime: 60                                       # time to run for in minutes
 save_step_counts: True                            # toggles saving the steps per episode
 servos:                                           # which servos to allow control of
     - "31:33:36:33:37:31"                         # finger servo
@@ -40,10 +40,12 @@ servos:                                           # which servos to allow contro
     - "32:34:30:35:35:31"                         # up/down servo
     - "32:34:31:31:33:33"                         # outer left/right servo
 set_slew_rate: False                              # toggles writing the slew rate to each servo at the start
-single_servo: True                                # toggles all-servo movement each timestep or single servo movement
+single_servo: False
 single_thread_interface: False
 sleep: 1                                          # time to sleep for between actions
 slew_rate: 2                                      # controls how fast the servos can move
-step_counts_outfile:
-    "results/brownian_step_counts.npy"            # file to save the steps per episode to; will overwrite
+step_counts_outfile: "results/brownian_step_counts_kill12_multiple.npy"
 wandb: True                                       # toggles logging to wandb
+kill_cameras:
+    min_kill: 1                                   # Minimum number of cameras to be turned off
+    max_kill: 2                                   # Maximum number of cameras to be turned off
