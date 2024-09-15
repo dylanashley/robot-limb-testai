@@ -1,0 +1,796 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+	<model name="Arm" canonical_link='tower'>
+		<link name="tower">
+			<self_collide>false</self_collide>
+			<pose relative_to='__model__'>0.0 0.0 0.100 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.7800822049961268</mass>
+				<inertia>
+					<ixx>0.0008189995972765369</ixx>
+					<ixy>-0.0003321188952345544</ixy>
+					<ixz>-5.532811351125456e-06</ixz>
+					<iyy>0.0008182778100633983</iyy>
+					<iyz>-5.094133998022077e-06</iyz>
+					<izz>0.0011911804118455984</izz>
+				</inertia>
+			</inertial>
+			<collision name="tower_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/tower.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="tower_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/tower.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="wrist_up_down">
+			<self_collide>false</self_collide>
+			<pose relative_to='tower'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.7800822049961268</mass>
+				<inertia>
+					<ixx>0.0008189995972765369</ixx>
+					<ixy>-0.0003321188952345544</ixy>
+					<ixz>-5.532811351125456e-06</ixz>
+					<iyy>0.0008182778100633983</iyy>
+					<iyz>-5.094133998022077e-06</iyz>
+					<izz>0.0011911804118455984</izz>
+				</inertia>
+			</inertial>
+			<collision name="wrist_up_down_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/wrist_up_down.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="wrist_up_down_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/wrist_up_down.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="wrist_rotation">
+			<self_collide>false</self_collide>
+			<pose relative_to='wrist_up_down'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.7800822049961268</mass>
+				<inertia>
+					<ixx>0.0008189995972765369</ixx>
+					<ixy>-0.0003321188952345544</ixy>
+					<ixz>-5.532811351125456e-06</ixz>
+					<iyy>0.0008182778100633983</iyy>
+					<iyz>-5.094133998022077e-06</iyz>
+					<izz>0.0011911804118455984</izz>
+				</inertia>
+			</inertial>
+			<collision name="wrist_rotation_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/wrist_rotation.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="wrist_rotation_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/wrist_rotation.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="finger_base">
+			<self_collide>false</self_collide>
+			<pose relative_to='wrist_rotation'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.128949218150533</mass>
+				<inertia>
+					<ixx>1.3336947843685135e-05</ixx>
+					<ixy>2.6381911721746838e-06</ixy>
+					<ixz>-1.1575411658425877e-09</ixz>
+					<iyy>2.3658235645015537e-05</iyy>
+					<iyz>1.2349325959428327e-09</iyz>
+					<izz>2.068821289453926e-05</izz>
+				</inertia>
+			</inertial>
+			<collision name="finger_base_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/finger_base.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="finger_base_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/finger_base.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="base_finger_camera_side_1">
+			<self_collide>false</self_collide>
+			<pose relative_to='finger_base'>-0.018 -0.018 0.013 0.0 -0.2 0.0</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="base_finger_camera_side_1_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="base_finger_camera_side_1_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="base_finger_camera_side_1_sensor" type="camera">
+				<pose relative_to='base_finger_camera_side_1'>0 0 0 0.0 0.0 -1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>base_finger_camera_side_1/image</topic>
+			</sensor>
+		</link>
+		<link name="base_finger_camera_side_2">
+			<self_collide>false</self_collide>
+			<pose relative_to='finger_base'>-0.018 0.032 0.013 0.0 0.2 3.14159265359</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="base_finger_camera_side_2_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="base_finger_camera_side_2_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="base_finger_camera_side_2_sensor" type="camera">
+				<pose relative_to='base_finger_camera_side_1'>0 0 0 0.0 0.0 1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>base_finger_camera_side_2/image</topic>
+			</sensor>
+		</link>
+		<link name="base_side_middle_finger">
+			<self_collide>false</self_collide>
+			<pose relative_to='finger_base'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.12894921828212288</mass>
+				<inertia>
+					<ixx>1.3340731146245855e-05</ixx>
+					<ixy>2.640026584155514e-06</ixy>
+					<ixz>-1.157551999311779e-09</ixz>
+					<iyy>2.3658236576714398e-05</iyy>
+					<iyz>1.1711211688438666e-09</iyz>
+					<izz>2.0691997124651706e-05</izz>
+				</inertia>
+			</inertial>
+			<collision name="base_side_middle_finger_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/base_side_middle_finger.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="base_side_middle_finger_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/base_side_middle_finger.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="base_side_middle_finger_camera">
+			<self_collide>false</self_collide>
+			<pose relative_to='base_side_middle_finger'>0.032 0.008 0.005 1.5708 -0.1 0</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="base_side_middle_finger_camera_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="base_side_middle_finger_camera_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="base_side_middle_finger_camera_sensor" type="camera">
+				<pose relative_to='base_side_middle_finger_camera'>0 0 0 0.0 0.0 -1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>base_side_middle_finger_camera/image</topic>
+			</sensor>
+		</link>
+		<link name="tip_side_middle_finger">
+			<self_collide>false</self_collide>
+			<pose relative_to='base_side_middle_finger'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.12894921828212288</mass>
+				<inertia>
+					<ixx>1.3340731146245855e-05</ixx>
+					<ixy>2.640026584155514e-06</ixy>
+					<ixz>-1.157551999311779e-09</ixz>
+					<iyy>2.3658236576714398e-05</iyy>
+					<iyz>1.1711211688438666e-09</iyz>
+					<izz>2.0691997124651706e-05</izz>
+				</inertia>
+			</inertial>
+			<collision name="tip_side_middle_finger_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/tip_side_middle_finger.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="tip_side_middle_finger_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/tip_side_middle_finger.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="tip_side_middle_finger_camera">
+			<self_collide>false</self_collide>
+			<pose relative_to='tip_side_middle_finger'>0.080 0.008 0.015 1.5708 -0.1 0</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="tip_side_middle_finger_camera_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="tip_side_middle_finger_camera_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="tip_side_middle_finger_camera_sensor" type="camera">
+				<pose relative_to='tip_side_middle_finger_camera'>0 0 0 0.0 0.0 -1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>tip_side_middle_finger_camera/image</topic>
+			</sensor>
+		</link>
+		<link name="finger_tip">
+			<self_collide>false</self_collide>
+			<pose relative_to='tip_side_middle_finger'>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+			<inertial>
+				<pose>0.0 0.0 0.0 0 0 0</pose>
+				<mass>0.0510965513982137</mass>
+				<inertia>
+					<ixx>3.859598389065379e-06</ixx>
+					<ixy>1.0610151268752532e-06</ixy>
+					<ixz>-2.588027822672534e-11</ixz>
+					<iyy>5.608124521502678e-06</iyy>
+					<iyz>1.990000540489853e-11</iyz>
+					<izz>5.682590632321194e-06</izz>
+				</inertia>
+			</inertial>
+			<collision name="finger_tip_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/finger_tip.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="finger_tip_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/finger_tip.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.5 0.5 1.0 1</ambient>
+					<diffuse>0.5 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+		</link>
+		<link name="finger_tip_down_camera">
+			<self_collide>false</self_collide>
+			<pose relative_to='finger_tip'>0.118 0.008 0.018 1.5708 -0.1 0</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="finger_tip_down_camera_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="finger_tip_down_camera_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="finger_tip_down_camera_sensor" type="camera">
+				<pose relative_to='finger_tip_down_camera'>0 0 0 0.0 0.0 -1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>finger_tip_down_camera/image</topic>
+			</sensor>
+		</link>
+		<link name="finger_tip_forward_camera">
+			<self_collide>false</self_collide>
+			<pose relative_to='finger_tip'>0.128 0.008 0.025 1.5708 -1.6708 0</pose>
+			<inertial>
+				<mass>0.0001</mass>
+				<inertia> <!-- inertias are tricky to compute -->
+					<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+					<ixx>0.0000083</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+					<ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+					<ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+					<iyy>0.0000083</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+					<iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+					<izz>0.0000083</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+				</inertia>
+			</inertial>
+			<collision name="finger_tip_forward_camera_collision">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+			</collision>
+			<visual name="finger_tip_forward_camera_visual">
+				<geometry>
+					<mesh>
+						<uri>model://Arm/meshes/CAD/ov2640.stl</uri>
+						<scale>0.001 0.001 0.001</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>1.0 0.5 1.0 1</ambient>
+					<diffuse>1.0 0.5 1.0 1</diffuse>
+					<specular>0.0 0.0 1.0 1</specular>
+				</material>
+			</visual>
+			<sensor name="finger_tip_forward_camera_sensor" type="camera">
+				<pose relative_to='finger_tip_forward_camera'>0 0 0 0.0 0.0 -1.5708</pose>
+				<camera>
+					<horizontal_fov>1.047</horizontal_fov>
+					<image>
+						<width>100</width>
+						<height>100</height>
+					</image>
+					<clip>
+						<near>0.1</near>
+						<far>100</far>
+					</clip>
+				</camera>
+				<always_on>1</always_on>
+				<update_rate>10</update_rate>
+				<visualize>true</visualize>
+				<topic>finger_tip_forward_camera/image</topic>
+			</sensor>
+		</link>
+		<joint name="world_fixed" type="fixed"> <!-- Fixes the base of the arm -->
+			<parent>world</parent>
+			<child>tower</child>
+		</joint>
+		<joint name="wrist_up_down_to_tower" type="revolute">
+			<parent>tower</parent>
+			<child>wrist_up_down</child>
+			<pose relative_to='tower'>-0.165 0.01 0.0 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='tower'>0 0 1</xyz>
+				<limit>
+					<lower>-3.14159265359</lower>
+					<upper>3.14159265359</upper>
+				</limit>
+			</axis>
+		</joint>
+		<joint name="wrist_rotation_to_wrist_up_down" type="revolute">
+			<parent>wrist_up_down</parent>
+			<child>wrist_rotation</child>
+			<pose relative_to='wrist_up_down'>-0.139 0 0.031 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='wrist_up_down'>0 1 0</xyz>
+				<limit>
+					<lower>-3.14159265359</lower>
+					<upper>3.14159265359</upper>
+				</limit>
+			</axis>
+		</joint>
+		<joint name="finger_base_to_wrist_rotation" type="revolute">
+			<parent>wrist_rotation</parent>
+			<child>finger_base</child>
+			<!-- TODO - fix this pose to revolve around the correct point -->
+			<pose relative_to='wrist_rotation'>0 0.005 0.012 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='wrist_rotation'>0.95 0.0.31225 0</xyz>
+				<limit>
+					<lower>-3.14159265359</lower>
+					<upper>3.14159265359</upper>
+				</limit>
+			</axis>
+		</joint>
+		<joint name="base_side_middle_finger_to_finger_base" type="revolute">
+			<parent>finger_base</parent>
+			<child>base_side_middle_finger</child>
+			<!-- TODO - fix this pose to revolve around the correct point -->
+			<pose relative_to='finger_base'>0.007 0 0.0255 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='finger_base'>0 1 0</xyz>
+				<limit>
+					<lower>-1.5708</lower>
+					<upper>1.5708</upper>
+				</limit>
+			</axis>
+		</joint>
+		<joint name="tip_side_middle_finger_to_base_side_middle_finger" type="revolute">
+			<parent>base_side_middle_finger</parent>
+			<child>tip_side_middle_finger</child>
+			<pose relative_to='base_side_middle_finger'>0.0557 0 0.03 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='base_side_middle_finger'>0 1 0</xyz>
+				<limit>
+					<lower>-1.5708</lower>
+					<upper>1.5708</upper>
+				</limit>
+			</axis>
+		</joint>
+		<joint name="finger_tip_to_tip_side_middle_finger" type="revolute">
+			<parent>tip_side_middle_finger</parent>
+			<child>finger_tip</child>
+			<!-- TODO - fix this pose to revolve around the correct point -->
+			<pose relative_to='tip_side_middle_finger'>0.0982 0 0.032 0 0 0</pose>
+			<axis>
+				<xyz expressed_in='tip_side_middle_finger'>0 1 0</xyz>
+				<limit>
+					<lower>-1.5708</lower>
+					<upper>1.5708</upper>
+				</limit>
+			</axis>
+		</joint>
+		<!-- Camera Joints -->
+		<joint name="base_finger_camera_side_1_joint" type="fixed">
+			<parent>finger_base</parent>
+			<child>base_finger_camera_side_1</child>
+			<pose relative_to='finger_base'>0 0 0 0 0 0</pose>
+		</joint>
+		<joint name="base_finger_camera_side_2_joint" type="fixed">
+			<parent>finger_base</parent>
+			<child>base_finger_camera_side_2</child>
+			<pose relative_to='finger_base'>0 0 0 0 0 0</pose>
+		</joint>
+		<joint name="base_side_middle_finger_camera_joint" type="fixed">
+			<parent>base_side_middle_finger</parent>
+			<child>base_side_middle_finger_camera</child>
+			<pose relative_to='base_side_middle_finger'>0 0 0 0 0 0</pose>
+		</joint>
+		<joint name="tip_side_middle_finger_camera_joint" type="fixed">
+			<parent>tip_side_middle_finger</parent>
+			<child>tip_side_middle_finger_camera</child>
+			<pose relative_to='tip_side_middle_finger'>0 0 0 0 0 0</pose>
+		</joint>
+		<joint name="finger_tip_forward_camera_joint" type="fixed">
+			<parent>finger_tip</parent>
+			<child>finger_tip_forward_camera</child>
+			<pose relative_to='finger_tip'>0 0 0 0 0 0</pose>
+		</joint>
+		<joint name="finger_tip_down_camera_joint" type="fixed">
+			<parent>finger_tip</parent>
+			<child>finger_tip_down_camera</child>
+			<pose relative_to='finger_tip'>0 0 0 0 0 0</pose>
+		</joint>
+
+		<plugin filename="libBabyRobot.so" name="gz::sim::systems::BabyRobot">
+			<has_temperature>false</has_temperature>
+			<has_current>false</has_current>
+			<has_actuator_1>true</has_actuator_1>
+			<joint_name_1_1>wrist_up_down_to_tower</joint_name_1_1>
+			<pid_1_p>10</pid_1_p>
+			<pid_1_i>0.9</pid_1_i>
+			<pid_1_d>0.5</pid_1_d>
+			<pid_1_imin>-10</pid_1_imin>
+			<pid_1_imax>10</pid_1_imax>
+			<min_command_1>-1.5708</min_command_1> <!-- -90 deg -->
+			<max_command_1>1.5708</max_command_1> <!-- 90 deg -->
+			<has_camera>true</has_camera>
+			<ms_check_camera>100</ms_check_camera>
+			<camera_topic>/base_side_middle_finger_camera/image</camera_topic>
+			<listen_port>1200</listen_port>
+			<send_port>1201</send_port>
+			<remote_port>1100</remote_port>
+			<remote_ip>127.0.0.1</remote_ip> <!-- <remote_ip>192.168.53.179</remote_ip> -->
+			<mac_address>1.2.3.0.0.0</mac_address>
+		</plugin>
+		<plugin filename="libBabyRobot.so" name="gz::sim::systems::BabyRobot">
+			<has_temperature>false</has_temperature>
+			<has_current>false</has_current>
+			<has_actuator_1>true</has_actuator_1>
+			<joint_name_1_1>wrist_rotation_to_wrist_up_down</joint_name_1_1>
+			<pid_1_p>20</pid_1_p>
+			<pid_1_i>0.9</pid_1_i>
+			<pid_1_d>0.5</pid_1_d>
+			<pid_1_imin>-10</pid_1_imin>
+			<pid_1_imax>10</pid_1_imax>
+			<min_command_1>-1.5708</min_command_1> <!-- -90 deg -->
+			<max_command_1>1.5708</max_command_1> <!-- 90 deg -->
+			<has_camera>true</has_camera>
+			<ms_check_camera>100</ms_check_camera>
+			<camera_topic>/tip_side_middle_finger_camera/image</camera_topic>
+			<listen_port>1210</listen_port>
+			<send_port>1211</send_port>
+			<remote_port>1100</remote_port>
+			<remote_ip>127.0.0.1</remote_ip> <!-- <remote_ip>192.168.53.179</remote_ip> -->
+			<mac_address>1.2.3.1.0.0</mac_address>
+		</plugin>
+		<plugin filename="libBabyRobot.so" name="gz::sim::systems::BabyRobot">
+			<has_temperature>false</has_temperature>
+			<has_current>false</has_current>
+			<has_actuator_1>true</has_actuator_1>
+			<joint_name_1_1>finger_base_to_wrist_rotation</joint_name_1_1>
+			<pid_1_p>1</pid_1_p>
+			<pid_1_i>0.3</pid_1_i>
+			<pid_1_d>0.1</pid_1_d>
+			<pid_1_imin>-10</pid_1_imin>
+			<pid_1_imax>10</pid_1_imax>
+			<min_command_1>-1.5708</min_command_1> <!-- -90 deg -->
+			<max_command_1>1.5708</max_command_1> <!-- 90 deg -->
+			<has_camera>true</has_camera>
+			<ms_check_camera>100</ms_check_camera>
+			<camera_topic>/finger_tip_down_camera/image</camera_topic>
+			<listen_port>1220</listen_port>
+			<send_port>1221</send_port>
+			<remote_port>1100</remote_port>
+			<remote_ip>127.0.0.1</remote_ip> <!-- <remote_ip>192.168.53.179</remote_ip> -->
+			<mac_address>1.2.3.2.0.0</mac_address>
+		</plugin>
+		<plugin filename="libBabyRobot.so" name="gz::sim::systems::BabyRobot">
+			<has_temperature>false</has_temperature>
+			<has_current>false</has_current>
+			<has_actuator_1>true</has_actuator_1>
+			<joint_name_1_1>base_side_middle_finger_to_finger_base</joint_name_1_1>
+			<joint_name_1_2>tip_side_middle_finger_to_base_side_middle_finger</joint_name_1_2>
+			<joint_name_1_3>finger_tip_to_tip_side_middle_finger</joint_name_1_3>
+			<!-- <test_actuator>true</test_actuator>
+			<test_actuator_time_ms>2000</test_actuator_time_ms>
+			<test_actuator_command>1</test_actuator_command>  -->
+			<pid_1_p>1.0</pid_1_p>
+			<pid_1_i>0.3</pid_1_i>
+			<pid_1_d>0.1</pid_1_d>
+			<pid_1_imin>-10</pid_1_imin>
+			<pid_1_imax>10</pid_1_imax>
+			<min_command_1>-1.0472</min_command_1> <!-- -60 deg -->
+			<max_command_1>1.0472</max_command_1> <!-- 60 deg -->
+			<has_camera>true</has_camera>
+			<ms_check_camera>100</ms_check_camera>
+			<camera_topic>/finger_tip_forward_camera/image</camera_topic>
+			<listen_port>1230</listen_port>
+			<send_port>1231</send_port>
+			<remote_port>1100</remote_port>
+			<remote_ip>127.0.0.1</remote_ip> <!-- <remote_ip>192.168.53.179</remote_ip> -->
+			<mac_address>1.2.3.3.0.0</mac_address>
+		</plugin>
+		
+		
+	</model>
+</sdf>
